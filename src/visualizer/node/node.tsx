@@ -1,6 +1,17 @@
 import './node.css';
 
-const Node = function (props: any) {
+interface INode {
+  row: number;
+  col: number;
+  isFinish: boolean;
+  isStart: boolean;
+  isWall: boolean;
+  onMouseDown: (row: number, col: number) => void;
+  onMouseEnter: (row: number, col: number) => void;
+  onMouseUp: (row: number, col: number) => void;
+}
+
+const Node = function (props: INode) {
   const {
     row,
     col,
