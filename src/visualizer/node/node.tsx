@@ -1,6 +1,6 @@
 import './node.css';
 
-interface INode {
+interface NodeProps {
   row: number;
   col: number;
   isFinish: boolean;
@@ -11,7 +11,7 @@ interface INode {
   onMouseUp: (row: number, col: number) => void;
 }
 
-const Node = function (props: INode) {
+const Node = function (props: NodeProps) {
   const {
     row,
     col,

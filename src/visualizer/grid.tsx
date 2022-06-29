@@ -1,24 +1,23 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Node from './node/node';
+import GridNode from '../types/GridNode';
+
+import dfs from '../algorithms/pathfinding/dfs';
 
 const NROWS: number = 20;
 const NCOLS: number = 50;
 
-interface GridNode {
-  row: number;
-  col: number;
-  isWall: boolean;
-}
-
 const gridInit = function () {
   const grid = [];
   for (let row = 0; row < NROWS; row++) {
-    const currentRow = [];
+    const currentRow: GridNode[] = [];
     for (let col = 0; col < NCOLS; col++) {
       currentRow.push({
         col,
         row,
         isWall: false,
+        isVisited: false,
+        parent: {} as GridNode,
       });
     }
     grid.push(currentRow);
@@ -26,7 +25,7 @@ const gridInit = function () {
   return grid;
 };
 
-const Grid = function (pros: PropsWithChildren) {
+const Grid = function () {
   const [grid, setGrid] = useState<GridNode[][]>([]);
   const [mousePressed, setMousePressed] = useState(false);
 
@@ -66,6 +65,9 @@ const Grid = function (pros: PropsWithChildren) {
 
   return (
     <div className="grid">
+      <button onClick={() => dfs(grid, grid[0][0], grid[10][15])}>
+        StartDFS
+      </button>
       {grid.map((row, i) => {
         return (
           <div key={i}>
