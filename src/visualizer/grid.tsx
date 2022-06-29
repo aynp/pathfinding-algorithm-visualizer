@@ -52,13 +52,14 @@ const Grid = function (pros: PropsWithChildren) {
 
   const handleMouseDown = function (row: number, col: number) {
     console.log('Mouse Down', row, col);
+    setMousePressed(true);
     toggleNode(row, col);
   };
 
   const handleMouseEnter = function (row: number, col: number) {
     if (!mousePressed) return;
     console.log('Mouse Enter', row, col);
-    toggleNode(row, col);
+    if (grid[row][col].isWall === false) toggleNode(row, col);
   };
 
   const handleMouseUp = function (row: number, col: number) {
