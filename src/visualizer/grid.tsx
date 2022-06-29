@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import Node from './node/node';
 
-const NROWS: number = 25;
+const NROWS: number = 20;
 const NCOLS: number = 50;
 
 interface GridNode {
@@ -51,27 +51,22 @@ const Grid = function (pros: PropsWithChildren) {
   };
 
   const handleMouseDown = function (row: number, col: number) {
-    console.log('Mouse Down', row, col);
     setMousePressed(true);
     toggleNode(row, col);
   };
 
   const handleMouseEnter = function (row: number, col: number) {
     if (!mousePressed) return;
-    console.log('Mouse Enter', row, col);
     if (grid[row][col].isWall === false) toggleNode(row, col);
   };
 
   const handleMouseUp = function (row: number, col: number) {
-    console.log('Mouse Up', row, col);
     setMousePressed(false);
   };
 
   return (
     <div className="grid">
       {grid.map((row, i) => {
-        console.log('RENDER');
-
         return (
           <div key={i}>
             {row.map((node, j) => {
