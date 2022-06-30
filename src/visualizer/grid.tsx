@@ -3,6 +3,7 @@ import Node from './node/node';
 import GridNode from '../types/GridNode';
 
 import dfs from '../algorithms/pathfinding/dfs';
+import bfs from '../algorithms/pathfinding/bfs';
 
 const NROWS: number = 20;
 const NCOLS: number = 50;
@@ -25,9 +26,21 @@ const gridInit = function () {
   return grid;
 };
 
+const clearGrid = function (grid: GridNode[][], setGrid: any) {
+  for (let row = 0; row < NROWS; row++) {
+    for (let col = 0; col < NCOLS; col++) {
+      const curNode = document.getElementById(`node-${row}-${col}`);
+      if (curNode) curNode.className = 'node';
+    }
+  }
+  const newGrid = gridInit();
+  setGrid(newGrid);
+};
+
 const Grid = function () {
   const [grid, setGrid] = useState<GridNode[][]>([]);
   const [mousePressed, setMousePressed] = useState(false);
+  const [showReset, setShowReset] = useState(true);
 
   useEffect(() => {
     const newGrid = gridInit();
@@ -65,8 +78,25 @@ const Grid = function () {
 
   return (
     <div className="grid">
-      <button onClick={() => dfs(grid, grid[0][0], grid[10][15])}>
-        StartDFS
+      <button
+        onClick={() => {
+          dfs(grid, grid[0][0], grid[10][15], setShowReset);
+        }}>
+        Start DFS
+      </button>
+      <button
+        onClick={() => {
+          bfs(grid, grid[0][0], grid[10][25], setShowReset);
+        }}>
+        Start BFS
+      </button>
+
+      <button
+        onClick={() => {
+          clearGrid(grid, setGrid);
+        }}
+        disabled={!showReset}>
+        Reset Grid
       </button>
       {grid.map((row, i) => {
         return (
