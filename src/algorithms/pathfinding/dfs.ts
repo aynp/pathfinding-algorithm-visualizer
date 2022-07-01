@@ -13,8 +13,8 @@ const isValid = (grid: GridNode[][], row: number, col: number) => {
   return true;
 };
 
-const visited: GridNode[] = [];
-const path: GridNode[] = [];
+let visited: GridNode[] = [];
+let path: GridNode[] = [];
 
 const rec = function (grid: GridNode[][], row: number, col: number) {
   grid[row][col].isVisited = true;
@@ -77,6 +77,8 @@ const dfs = function (
   end: any,
   setShowReset: any
 ) {
+  visited = [];
+  path = [];
   setShowReset(false);
   rec(grid, start.row, start.col);
   backtrack(grid, start, end);

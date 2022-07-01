@@ -14,8 +14,8 @@ const isValid = (grid: GridNode[][], row: number, col: number) => {
   return true;
 };
 
-const visited: GridNode[] = [];
-const path: GridNode[] = [];
+let visited: GridNode[] = [];
+let path: GridNode[] = [];
 
 const animateShortest = function (setShowReset: any) {
   for (let i = 0; i < path.length; i++) {
@@ -67,6 +67,9 @@ const bfs = function (
   end: any,
   setShowReset: any
 ) {
+  visited = [];
+  path = [];
+
   setShowReset(false);
   const queue: GridNode[] = [];
   queue.push(start);

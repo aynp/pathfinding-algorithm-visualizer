@@ -12,7 +12,6 @@ interface NodeProps {
 }
 
 const Node = function (props: NodeProps) {
-  console.log('NEW NODEEE');
   const {
     row,
     col,

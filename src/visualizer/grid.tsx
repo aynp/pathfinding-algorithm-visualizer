@@ -5,8 +5,8 @@ import GridNode from '../types/GridNode';
 import dfs from '../algorithms/pathfinding/dfs';
 import bfs from '../algorithms/pathfinding/bfs';
 
-const NROWS: number = 3;
-const NCOLS: number = 3;
+const NROWS: number = 20;
+const NCOLS: number = 40;
 
 /**
  * Creates a new grid
@@ -17,11 +17,14 @@ const gridInit = function () {
     const currentRow: GridNode[] = [];
     for (let col = 0; col < NCOLS; col++) {
       currentRow.push({
-        col,
-        row,
+        col: col,
+        row: row,
         isWall: false,
         isVisited: false,
-        parent: {} as GridNode,
+        parent: {
+          row: -1,
+          col: -1,
+        },
       });
     }
     grid.push(currentRow);
@@ -75,7 +78,7 @@ const Grid = function () {
 
   const handleMouseEnter = function (row: number, col: number) {
     if (!mousePressed) return;
-    if (grid[row][col].isWall === false) toggleNode(row, col);
+    if (!grid[row][col].isWall) toggleNode(row, col);
   };
 
   const handleMouseUp = function (row: number, col: number) {
@@ -86,13 +89,13 @@ const Grid = function () {
     <div className="grid">
       <button
         onClick={() => {
-          dfs(grid, grid[0][0], grid[2][2], setShowReset);
+          dfs(grid, grid[0][0], grid[15][15], setShowReset);
         }}>
         Start DFS
       </button>
       <button
         onClick={() => {
-          bfs(grid, grid[0][0], grid[2][2], setShowReset);
+          bfs(grid, grid[0][0], grid[15][15], setShowReset);
         }}>
         Start BFS
       </button>
