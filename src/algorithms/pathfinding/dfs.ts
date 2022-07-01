@@ -6,37 +6,38 @@ import GridNode from '../../types/GridNode';
 const dx = [-1, 0, 1, 0];
 const dy = [0, 1, 0, -1];
 
-const Isvalid = (grid: GridNode[][], row: number, col: number) => {
+const isValid = (grid: GridNode[][], row: number, col: number) => {
   if (row < 0 || row >= grid.length) return false;
   if (col < 0 || col >= grid[0].length) return false;
   if (grid[row][col].isVisited || grid[row][col].isWall) return false;
   return true;
 };
 
-const visorder: GridNode[] = [];
+let visited: GridNode[] = [];
+let path: GridNode[] = [];
 
 const rec = function (grid: GridNode[][], row: number, col: number) {
   grid[row][col].isVisited = true;
 
-  visorder.push(grid[row][col]);
-
-  // setTimeout(() => {
+  visited.push(grid[row][col]);
   for (let i = 0; i < 4; i++) {
-    if (!Isvalid(grid, row + dx[i], col + dy[i])) continue;
+    if (!isValid(grid, row + dx[i], col + dy[i])) continue;
     grid[row + dx[i]][col + dy[i]].parent = grid[row][col];
     rec(grid, row + dx[i], col + dy[i]);
   }
-  // }, 100);
 };
 
-const path: GridNode[] = [];
-
-const backtrack = function (start: GridNode, cur: GridNode) {
+const backtrack = function (
+  grid: GridNode[][],
+  start: GridNode,
+  cur: GridNode
+) {
   console.log('Running backtrack');
   if (!cur.isVisited) return;
   while (!(cur.row === start.row && cur.col === start.col)) {
     path.unshift(cur);
-    cur = cur.parent;
+    const { row: prow, col: pcol } = cur.parent;
+    cur = grid[prow][pcol];
   }
   path.unshift(start);
 };
@@ -56,8 +57,9 @@ const animateShortest = function (setShowReset: any) {
 };
 
 const animateVisited = function (setShowReset: any) {
-  for (let i = 0; i < visorder.length; i++) {
-    const element = visorder[i];
+  console.log(visited);
+  for (let i = 0; i < visited.length; i++) {
+    const element = visited[i];
     setTimeout(() => {
       document
         .getElementById(`node-${element.row}-${element.col}`)
@@ -66,7 +68,7 @@ const animateVisited = function (setShowReset: any) {
   }
   setTimeout(() => {
     animateShortest(setShowReset);
-  }, 10 * visorder.length);
+  }, 10 * visited.length);
 };
 
 const dfs = function (
@@ -75,9 +77,11 @@ const dfs = function (
   end: any,
   setShowReset: any
 ) {
+  visited = [];
+  path = [];
   setShowReset(false);
   rec(grid, start.row, start.col);
-  backtrack(start, end);
+  backtrack(grid, start, end);
   animateVisited(setShowReset);
   return;
 };

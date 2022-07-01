@@ -3,7 +3,10 @@ interface GridNode {
   col: number;
   isVisited: boolean;
   isWall: boolean;
-  parent: GridNode;
+  parent: {
+    row: number;
+    col: number;
+  };
 }
 
 export default GridNode;
