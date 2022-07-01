@@ -14,22 +14,18 @@ const Isvalid = (grid: GridNode[][], row: number, col: number) => {
 };
 
 const visorder: GridNode[] = [];
+const path: GridNode[] = [];
 
 const rec = function (grid: GridNode[][], row: number, col: number) {
   grid[row][col].isVisited = true;
 
   visorder.push(grid[row][col]);
-
-  // setTimeout(() => {
   for (let i = 0; i < 4; i++) {
     if (!Isvalid(grid, row + dx[i], col + dy[i])) continue;
     grid[row + dx[i]][col + dy[i]].parent = grid[row][col];
     rec(grid, row + dx[i], col + dy[i]);
   }
-  // }, 100);
 };
-
-const path: GridNode[] = [];
 
 const backtrack = function (start: GridNode, cur: GridNode) {
   console.log('Running backtrack');
@@ -56,6 +52,7 @@ const animateShortest = function (setShowReset: any) {
 };
 
 const animateVisited = function (setShowReset: any) {
+  console.log(visorder);
   for (let i = 0; i < visorder.length; i++) {
     const element = visorder[i];
     setTimeout(() => {

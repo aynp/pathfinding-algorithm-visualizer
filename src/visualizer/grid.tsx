@@ -5,11 +5,14 @@ import GridNode from '../types/GridNode';
 import dfs from '../algorithms/pathfinding/dfs';
 import bfs from '../algorithms/pathfinding/bfs';
 
-const NROWS: number = 20;
-const NCOLS: number = 50;
+const NROWS: number = 3;
+const NCOLS: number = 3;
 
+/**
+ * Creates a new grid
+ */
 const gridInit = function () {
-  const grid = [];
+  const grid: GridNode[][] = [];
   for (let row = 0; row < NROWS; row++) {
     const currentRow: GridNode[] = [];
     for (let col = 0; col < NCOLS; col++) {
@@ -26,21 +29,28 @@ const gridInit = function () {
   return grid;
 };
 
-const clearGrid = function (grid: GridNode[][], setGrid: any) {
-  for (let row = 0; row < NROWS; row++) {
-    for (let col = 0; col < NCOLS; col++) {
-      const curNode = document.getElementById(`node-${row}-${col}`);
-      if (curNode) curNode.className = 'node';
-    }
-  }
-  const newGrid = gridInit();
-  setGrid(newGrid);
-};
+/**
+ * Clears Grid
+ */
 
 const Grid = function () {
   const [grid, setGrid] = useState<GridNode[][]>([]);
   const [mousePressed, setMousePressed] = useState(false);
   const [showReset, setShowReset] = useState(true);
+
+  const clearGrid = function () {
+    const newGrid = grid.slice();
+    for (let row = 0; row < NROWS; row++) {
+      for (let col = 0; col < NCOLS; col++) {
+        const curNode = document.getElementById(`node-${row}-${col}`);
+        if (curNode) curNode.className = 'node';
+        newGrid[row][col].isVisited = false;
+        newGrid[row][col].isWall = false;
+        newGrid[row][col].parent = {} as GridNode;
+      }
+    }
+    setGrid(newGrid);
+  };
 
   useEffect(() => {
     const newGrid = gridInit();
@@ -49,16 +59,12 @@ const Grid = function () {
   }, []);
 
   const toggleNode = function (row: number, col: number) {
-    // grid[row][col] = {
-    //   ...grid[row][col],
-    //   isWall: !grid[row][col].isWall,
-    // };
-
     const newGrid = grid.slice();
     newGrid[row][col] = {
       ...newGrid[row][col],
       isWall: !newGrid[row][col].isWall,
     };
+    console.log(newGrid[row][col].isVisited);
     setGrid(newGrid);
   };
 
@@ -80,20 +86,20 @@ const Grid = function () {
     <div className="grid">
       <button
         onClick={() => {
-          dfs(grid, grid[0][0], grid[10][15], setShowReset);
+          dfs(grid, grid[0][0], grid[2][2], setShowReset);
         }}>
         Start DFS
       </button>
       <button
         onClick={() => {
-          bfs(grid, grid[0][0], grid[10][25], setShowReset);
+          bfs(grid, grid[0][0], grid[2][2], setShowReset);
         }}>
         Start BFS
       </button>
 
       <button
         onClick={() => {
-          clearGrid(grid, setGrid);
+          clearGrid();
         }}
         disabled={!showReset}>
         Reset Grid

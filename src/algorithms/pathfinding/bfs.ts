@@ -9,7 +9,12 @@ const dy = [0, 1, 0, -1];
 const Isvalid = (grid: GridNode[][], row: number, col: number) => {
   if (row < 0 || row >= grid.length) return false;
   if (col < 0 || col >= grid[0].length) return false;
-  if (grid[row][col].isVisited || grid[row][col].isWall) return false;
+  // console.log(grid[row][col]);
+  if (grid[row][col].isWall) return false;
+  // if (grid[row][col].isWall) {
+  //   // console.log(row, col);
+  // }
+  if (grid[row][col].isVisited) return false;
   return true;
 };
 
@@ -47,9 +52,11 @@ const animateVisited = function (setShowReset: any) {
 const backtrack = function (start: GridNode, cur: GridNode) {
   if (!cur.isVisited) return;
   while (!(cur.row === start.row && cur.col === start.col)) {
+    console.log(cur);
     path.unshift(cur);
     cur = cur.parent;
   }
+  console.log(start);
   path.unshift(start);
 };
 
@@ -68,7 +75,6 @@ const bfs = function (
     if (!cur) return;
 
     visorder.push(cur);
-
     for (let i = 0; i < 4; i++) {
       if (!Isvalid(grid, cur.row + dx[i], cur.col + dy[i])) continue;
       grid[cur.row + dx[i]][cur.col + dy[i]].parent = cur;
