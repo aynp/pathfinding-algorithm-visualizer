@@ -6,19 +6,15 @@ import GridNode from '../../types/GridNode';
 const dx = [-1, 0, 1, 0];
 const dy = [0, 1, 0, -1];
 
-const Isvalid = (grid: GridNode[][], row: number, col: number) => {
+const isValid = (grid: GridNode[][], row: number, col: number) => {
   if (row < 0 || row >= grid.length) return false;
   if (col < 0 || col >= grid[0].length) return false;
-  // console.log(grid[row][col]);
   if (grid[row][col].isWall) return false;
-  // if (grid[row][col].isWall) {
-  //   // console.log(row, col);
-  // }
   if (grid[row][col].isVisited) return false;
   return true;
 };
 
-const visorder: GridNode[] = [];
+const visited: GridNode[] = [];
 const path: GridNode[] = [];
 
 const animateShortest = function (setShowReset: any) {
@@ -36,8 +32,8 @@ const animateShortest = function (setShowReset: any) {
 };
 
 const animateVisited = function (setShowReset: any) {
-  for (let i = 0; i < visorder.length; i++) {
-    const element = visorder[i];
+  for (let i = 0; i < visited.length; i++) {
+    const element = visited[i];
     setTimeout(() => {
       document
         .getElementById(`node-${element.row}-${element.col}`)
@@ -46,15 +42,20 @@ const animateVisited = function (setShowReset: any) {
   }
   setTimeout(() => {
     animateShortest(setShowReset);
-  }, 10 * visorder.length);
+  }, 10 * visited.length);
 };
 
-const backtrack = function (start: GridNode, cur: GridNode) {
+const backtrack = function (
+  grid: GridNode[][],
+  start: GridNode,
+  cur: GridNode
+) {
   if (!cur.isVisited) return;
   while (!(cur.row === start.row && cur.col === start.col)) {
     console.log(cur);
     path.unshift(cur);
-    cur = cur.parent;
+    const { row: prow, col: pcol } = cur.parent;
+    cur = grid[prow][pcol];
   }
   console.log(start);
   path.unshift(start);
@@ -74,16 +75,16 @@ const bfs = function (
     const cur = queue.shift();
     if (!cur) return;
 
-    visorder.push(cur);
+    visited.push(cur);
     for (let i = 0; i < 4; i++) {
-      if (!Isvalid(grid, cur.row + dx[i], cur.col + dy[i])) continue;
+      if (!isValid(grid, cur.row + dx[i], cur.col + dy[i])) continue;
       grid[cur.row + dx[i]][cur.col + dy[i]].parent = cur;
       queue.push(grid[cur.row + dx[i]][cur.col + dy[i]]);
       grid[cur.row + dx[i]][cur.col + dy[i]].isVisited = true;
     }
   }
 
-  backtrack(start, end);
+  backtrack(grid, start, end);
 
   animateVisited(setShowReset);
 
