@@ -1,4 +1,4 @@
-import './node.css';
+import './Node.css';
 
 interface NodeProps {
   row: number;
