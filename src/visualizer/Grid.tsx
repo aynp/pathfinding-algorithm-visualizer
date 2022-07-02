@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Node from './node/node';
+import Node from './node/Node';
 import GridNode from '../types/GridNode';
 
 import dfs from '../algorithms/pathfinding/dfs';

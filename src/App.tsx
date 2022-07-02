@@ -1,5 +1,5 @@
 import './App.css';
-import Grid from './visualizer/grid';
+import Grid from './visualizer/Grid';
 
 function App() {
   return (
